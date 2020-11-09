@@ -1,0 +1,3 @@
+[submodule "rrna_scripts"]
+	path = rrna_scripts
+	url = https://github.com/adbailey4/rrna_scripts
