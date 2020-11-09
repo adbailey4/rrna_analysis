@@ -1,0 +1,71 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: andrewbailey-train-test-rrna-$TS
+spec:
+  ttlSecondsAfterFinished: 6000
+  template:
+    spec:
+#      template:
+#        metadata: # Apply a lable saying that we use NUMA node 0
+#          labels:
+#            usesnuma0: "Yes"
+#      affinity: # Say that we should not schedule on the same node as any other pod with that label
+#        podAntiAffinity:
+#          requiredDuringSchedulingIgnoredDuringExecution:
+#            - labelSelector:
+#                matchExpressions:
+#                  - key: usesnuma0
+#                    operator: In
+#                    values:
+#                      - "Yes"
+#              topologyKey: "kubernetes.io/hostname"
+      containers:
+        - name: main
+          imagePullPolicy: Always
+          image: ucscbailey/signalalign:v0.3.0
+          env:
+            - name: MODELS_BUCKET
+              value: "bailey-k8s/rrna_experiments/train_rrna_testing_10_26_20/"
+            - name: OUTPUT_BUCKET
+              value: "bailey-k8s/rrna_experiments/train_rrna_testing_10_26_20/output/"
+            - name: N_THREADS
+              value: "12"
+            - name: EMBED
+              value: "false"
+            - name: THRESHOLD
+              value: "0.01"
+            - name: P_THRESHOLD
+              value: "0.7"
+
+          command:
+            - /bin/bash
+            - -c
+            - |
+              set -e
+              DEBIAN_FRONTEND=noninteractive apt-get -qq update
+              DEBIAN_FRONTEND=noninteractive apt-get -qq install -y awscli git
+              #             download data
+              aws s3 sync --no-progress s3://bailey-k8s/rrna_yeast_data/reference/ reference
+              aws s3 cp --no-progress s3://bailey-k8s/rrna_yeast_data/train_test.sh .
+              git clone https://github.com/adbailey4/rrna_scripts
+              bash train_test.sh "$(MODELS_BUCKET)" "$(OUTPUT_BUCKET)" "$(N_THREADS)" "$(EMBED)" "$(THRESHOLD)" "$(P_THRESHOLD)"
+              echo DONE
+          volumeMounts:
+            - mountPath: /root/.aws
+              name: s3-credentials
+            - mountPath: /data
+              name: scratch-volume
+          resources:
+            limits:
+              cpu: 12
+              memory: "100Gi"
+              ephemeral-storage: "150Gi"
+      restartPolicy: Never
+      volumes:
+        - name: scratch-volume
+          emptyDir: { }
+        - name: s3-credentials
+          secret:
+            secretName: shared-s3-credentials
+  backoffLimit: 0
