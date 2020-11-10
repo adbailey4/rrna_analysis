@@ -23,21 +23,7 @@ spec:
       containers:
         - name: main
           imagePullPolicy: Always
-          image: ucscbailey/signalalign:v0.3.0
-          env:
-            - name: MODELS_BUCKET
-              value: "bailey-k8s/rrna_experiments/train_rrna_testing_10_26_20/"
-            - name: OUTPUT_BUCKET
-              value: "bailey-k8s/rrna_experiments/train_rrna_testing_10_26_20/output/"
-            - name: N_THREADS
-              value: "12"
-            - name: EMBED
-              value: "false"
-            - name: THRESHOLD
-              value: "0.01"
-            - name: P_THRESHOLD
-              value: "0.7"
-
+          image: ucscbailey/signalalign:bailey-dev
           command:
             - /bin/bash
             - -c
@@ -46,10 +32,8 @@ spec:
               DEBIAN_FRONTEND=noninteractive apt-get -qq update
               DEBIAN_FRONTEND=noninteractive apt-get -qq install -y awscli git
               #             download data
-              aws s3 sync --no-progress s3://bailey-k8s/rrna_yeast_data/reference/ reference
               aws s3 cp --no-progress s3://bailey-k8s/rrna_yeast_data/train_test.sh .
-              git clone https://github.com/adbailey4/rrna_scripts
-              bash train_test.sh "$(MODELS_BUCKET)" "$(OUTPUT_BUCKET)" "$(N_THREADS)" "$(EMBED)" "$(THRESHOLD)" "$(P_THRESHOLD)"
+              bash train_test.sh
               echo DONE
           volumeMounts:
             - mountPath: /root/.aws
@@ -58,9 +42,9 @@ spec:
               name: scratch-volume
           resources:
             limits:
-              cpu: 12
+              cpu: 20
               memory: "100Gi"
-              ephemeral-storage: "150Gi"
+              ephemeral-storage: "250Gi"
       restartPolicy: Never
       volumes:
         - name: scratch-volume
