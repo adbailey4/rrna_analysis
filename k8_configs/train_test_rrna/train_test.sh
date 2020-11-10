@@ -13,7 +13,7 @@ N_CBF5_GAL_READS=$N_TEST_READS
 #N_NOP58_GLU_READS=100
 
 
-MODELS_BUCKET="bailey-k8s/rrna_experiments/train_rrna_testing_10_26_20/"
+MODELS_BUCKET="bailey-k8s/rrna_experiments/models/null_model/"
 OUTPUT_BUCKET_TMP="bailey-k8s/rrna_experiments/supervised/probability_sweep/"
 EXPERIMENT_NAME="train_${N_TRAIN_READS}_test_${N_TEST_READS}_prob_${P_THRESHOLD}"
 OUTPUT_BUCKET="${OUTPUT_BUCKET_TMP}${EXPERIMENT_NAME}/"
@@ -42,8 +42,8 @@ download_files() {
   aws s3 sync --no-progress s3://bailey-k8s/rrna_yeast_data/NOP58_GAL/ NOP58_GAL
   tar -xzf NOP58_GAL/Nop58_GAL_25S_full_length_fast5.tar.gz -C NOP58_GAL && rm NOP58_GAL/Nop58_GAL_25S_full_length_fast5.tar.gz
   tar -xzf NOP58_GAL/Nop58_GAL_18S_full_length_fast5.tar.gz -C NOP58_GAL && rm NOP58_GAL/Nop58_GAL_18S_full_length_fast5.tar.gz
-  sed -i 's='/data/'='$cwd/'=g' "$cwd"/NOP58_GAL/kube_NOP58GAL.2308.full_length.18S.readdb
-  sed -i 's='/data/'='$cwd/'=g' "$cwd"/NOP58_GAL/kube_NOP58GAL.2308.full_length.25S.readdb
+  sed -i 's='/data/'='"$cwd"/'=g' "$cwd"/NOP58_GAL/kube_NOP58GAL.2308.full_length.18S.readdb
+  sed -i 's='/data/'='"$cwd"/'=g' "$cwd"/NOP58_GAL/kube_NOP58GAL.2308.full_length.25S.readdb
   head -"$N_NOP58_GAL_READS"  "$cwd"/NOP58_GAL/kube_NOP58GAL.2308.full_length.18S.readdb > "$cwd"/NOP58_GAL/run_ngal.readdb
   head -"$N_NOP58_GAL_READS"  "$cwd"/NOP58_GAL/kube_NOP58GAL.2308.full_length.25S.readdb >> "$cwd"/NOP58_GAL/run_ngal.readdb
   echo "NOP58_GAL Done"
@@ -52,8 +52,8 @@ download_files() {
   aws s3 sync --no-progress s3://bailey-k8s/rrna_yeast_data/IVT/ IVT
   tar -xzf IVT/ivt_25S_full_length.tar.gz -C IVT && rm IVT/ivt_25S_full_length.tar.gz
   tar -xzf IVT/ivt_18S_full_length.tar.gz -C IVT && rm IVT/ivt_18S_full_length.tar.gz
-  sed -i 's='/data/'='$cwd/'=g' "$cwd"/IVT/kube_ivt_full_length_18S.readdb
-  sed -i 's='/data/'='$cwd/'=g' "$cwd"/IVT/kube_ivt_full_length_25S.readdb
+  sed -i 's='/data/'='"$cwd"/'=g' "$cwd"/IVT/kube_ivt_full_length_18S.readdb
+  sed -i 's='/data/'='"$cwd"/'=g' "$cwd"/IVT/kube_ivt_full_length_25S.readdb
   head -"$N_IVT_READS"  "$cwd"/IVT/kube_ivt_full_length_18S.readdb > "$cwd"/IVT/run_ivt.readdb
   head -"$N_IVT_READS"  "$cwd"/IVT/kube_ivt_full_length_25S.readdb >> "$cwd"/IVT/run_ivt.readdb
   echo "ivt Done"
@@ -62,8 +62,8 @@ download_files() {
   aws s3 sync --no-progress s3://bailey-k8s/rrna_yeast_data/CBF5_GAL/ CBF5_GAL
   tar -xzf CBF5_GAL/CBF5_GAL_25S_full_length.tar.gz -C CBF5_GAL && rm CBF5_GAL/CBF5_GAL_25S_full_length.tar.gz
   tar -xzf CBF5_GAL/CBF5_GAL_18S_full_length.tar.gz -C CBF5_GAL && rm CBF5_GAL/CBF5_GAL_18S_full_length.tar.gz
-  sed -i 's='/data/'='$cwd/'=g' "$cwd"/CBF5_GAL/kube_CBF5GAL_full_length.18S.readdb
-  sed -i 's='/data/'='$cwd/'=g' "$cwd"/CBF5_GAL/kube_CBF5GAL_full_length.25S.readdb
+  sed -i 's='/data/'='"$cwd"/'=g' "$cwd"/CBF5_GAL/kube_CBF5GAL_full_length.18S.readdb
+  sed -i 's='/data/'='"$cwd"/'=g' "$cwd"/CBF5_GAL/kube_CBF5GAL_full_length.25S.readdb
   head -"$N_CBF5_GAL_READS"  "$cwd"/CBF5_GAL/kube_CBF5GAL_full_length.18S.readdb > "$cwd"/CBF5_GAL/run_cgal.readdb
   head -"$N_CBF5_GAL_READS"  "$cwd"/CBF5_GAL/kube_CBF5GAL_full_length.25S.readdb >> "$cwd"/CBF5_GAL/run_cgal.readdb
   echo "CBF5_GAL Done"
@@ -137,10 +137,6 @@ run_training_routine() {
 train_sa() {
 #             create output directory
 # $1 model name
-# $2 job_count
-# $3 embed
-# $4 threshold
-# $5 p_threshold
 
 
 cwd=$(pwd)
@@ -165,7 +161,7 @@ cat << EOF >> run_embed_plot_wrapper.json
   "force_pos_hist": false,
   "reference": "/data/reference/yeast_25S_18S.fa",
   "alphabet": "ACGTabcdefghijklm",
-  "min_prob": ${5:-0.7},
+  "min_prob": $P_THRESHOLD,
   "iterations": []
 }
 EOF
