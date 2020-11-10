@@ -1,10 +1,5 @@
 #!/bin/bash
-# $1 model bucket
-# $2 job_count
-# $3 output bucket
 
-MODELS_BUCKET="bailey-k8s/rrna_experiments/train_rrna_testing_10_26_20/"
-OUTPUT_BUCKET="bailey-k8s/rrna_experiments/train_rrna_testing_10_26_20/output/"
 N_THREADS=20
 THRESHOLD="0.01"
 P_THRESHOLD="0.5"
@@ -16,6 +11,13 @@ N_CBF5_GAL_READS=$N_TEST_READS
 
 #N_CBF5_GLU_READS=100
 #N_NOP58_GLU_READS=100
+
+
+MODELS_BUCKET="bailey-k8s/rrna_experiments/train_rrna_testing_10_26_20/"
+OUTPUT_BUCKET_TMP="bailey-k8s/rrna_experiments/supervised/probability_sweep/"
+EXPERIMENT_NAME="train_${N_TRAIN_READS}_test_${N_TEST_READS}_prob_${P_THRESHOLD}"
+OUTPUT_BUCKET="${OUTPUT_BUCKET_TMP}${EXPERIMENT_NAME}/"
+
 
 main() {
   start=$SECONDS
@@ -92,7 +94,7 @@ run_training_routine() {
 
   mkdir models
   mkdir output
-  for model in $(aws s3 ls s3://"$1")
+  for model in $(aws s3 ls s3://"$MODELS_BUCKET")
   do
     if [[ "$model" == *.model ]]
     then
@@ -411,5 +413,5 @@ EOF
 /data/rrna_scripts/scripts/train_test_accuracy_wrapper.py --config train_test_config.json
 }
 
-main "$1" "$2" "$3" "$4" "$5"
+main
 
