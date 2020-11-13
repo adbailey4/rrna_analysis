@@ -13,6 +13,22 @@ RNA was extracted from yeast cells either expressing (GAL) or depleted (GLU) of 
     * Libraries were sequenced on the MinION using R9.4.1 chemistry
     * Basecalling was done by Miten using Guppy/FlipFlop
     * Reads were mapped with MiniMap2 either to the SacCer3 genome which contains two repeats of the rRNA genes, or to a custom genome containing just a single copy of rRNA (37S.fa.txt)
+    * ```Hi Bailey,
+         
+         The strain genotype is ura3-52, trp-, leu2-delta1, his3-delta200, gal2, gal-delta108.  Basically this means that the cells can’t survive without media containing uracil, tryptophan, leucine, and histidine.  If an essential protein is driven by the GAL promoter, cells also require galactose. I’m not sure I will be able to trace back the history of this strain.  Strains get passed around from lab to lab, crossed to other strains, renamed, etc. I’m attaching the relevant papers.
+         
+         This is likely a different strain background then the BY4741 strain that was used in the genome-wide studies.  BY4741 is sort of a designer strain that was constructed (Maybe 15 years ago?) in part for the yeast deletion project.
+         
+         But as I said, I suspect there should be little strain-to-strain variation.  But who knows.
+         
+         Yes you are correct about the review article that that image came from.  
+         
+         I’ve been manually going through the current plots that JP previously generated for these data sets and yes, almost all modifications seem to cause a change in the current.  So that is awesome!  I have also found instances where the current changes fairly dramatically between the IVT control and biological samples, but is not associated with an annotated mod, so there might be potential to discover new mod sites and possibly unannotated snoRNAs that guide the mods. Tollervey stood on the stage at the RNA Society Meeting in 2017 and proclaimed to 1000 people that ALL MODS AND snoRNAs in rRNA have been identified lol.  I find that hard to believe and it would be great to prove him wrong haha.
+         
+         Which mod position did you think was not present in the data?
+         
+         Best,
+         Jason```
 
 # Analysis
 CBF5 GAL = Native
