@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: andrewbailey-train-test-rrna-$TS
+  name: andrewbailey-train-test-rrna-0.1-$TS
 spec:
   ttlSecondsAfterFinished: 6000
   template:
@@ -24,6 +24,9 @@ spec:
         - name: main
           imagePullPolicy: Always
           image: ucscbailey/signalalign:bailey-dev
+          env:
+            - name: N_THREADS
+              value: "30"
           command:
             - /bin/bash
             - -c
@@ -33,7 +36,7 @@ spec:
               DEBIAN_FRONTEND=noninteractive apt-get -qq install -y awscli git
               #             download data
               aws s3 cp --no-progress s3://bailey-k8s/rrna_yeast_data/train_test.sh .
-              bash train_test.sh
+              bash train_test.sh "$(N_THREADS)"
               echo DONE
           volumeMounts:
             - mountPath: /root/.aws
@@ -42,9 +45,9 @@ spec:
               name: scratch-volume
           resources:
             limits:
-              cpu: 20
-              memory: "100Gi"
-              ephemeral-storage: "250Gi"
+              cpu: 30
+              memory: "150Gi"
+              ephemeral-storage: "350Gi"
       restartPolicy: Never
       volumes:
         - name: scratch-volume

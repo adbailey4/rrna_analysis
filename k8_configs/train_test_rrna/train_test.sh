@@ -1,28 +1,27 @@
 #!/bin/bash
 
-N_THREADS=20
 THRESHOLD="0.01"
-P_THRESHOLD="0.5"
-N_TRAIN_READS=100
-N_TEST_READS=100
+P_THRESHOLD="0.9"
+N_TRAIN_READS=500
+N_TEST_READS=500
 N_NOP58_GAL_READS=$N_TRAIN_READS
 N_IVT_READS=$N_TEST_READS
 N_CBF5_GAL_READS=$N_TEST_READS
-
+EM_ITERATIONS=30
 #N_CBF5_GLU_READS=100
 #N_NOP58_GLU_READS=100
 
 
 MODELS_BUCKET="bailey-k8s/rrna_experiments/models/null_model/"
 OUTPUT_BUCKET_TMP="bailey-k8s/rrna_experiments/supervised/probability_sweep/"
-EXPERIMENT_NAME="train_${N_TRAIN_READS}_test_${N_TEST_READS}_prob_${P_THRESHOLD}"
+EXPERIMENT_NAME="train_${N_TRAIN_READS}_test_${N_TEST_READS}_prob_${P_THRESHOLD}_em_iterations_${EM_ITERATIONS}"
 OUTPUT_BUCKET="${OUTPUT_BUCKET_TMP}${EXPERIMENT_NAME}/"
 
 
 main() {
   start=$SECONDS
   download_files
-  run_training_routine
+  run_training_routine "$1"
   duration=$(( SECONDS - start ))
   hours=$(( duration / 3600 ))
   minutes=$(( (duration - (hours*3600) ) / 60 ))
@@ -99,7 +98,7 @@ run_training_routine() {
     if [[ "$model" == *.model ]]
     then
       aws s3 cp --no-progress s3://"$MODELS_BUCKET""$model" models
-      train_sa "$model"
+      train_sa "$model" "$1"
       #               tar and upload variant calls
       aws s3 cp --no-progress train_test.sh s3://"$OUTPUT_BUCKET"
 
@@ -137,7 +136,9 @@ run_training_routine() {
 train_sa() {
 #             create output directory
 # $1 model name
-
+# $2 n_threads
+N_THREADS=${2:-1}
+echo "N_THREADS: " "$N_THREADS"
 
 cwd=$(pwd)
 MODEL_PATH="\"$cwd/models/$1\""
@@ -151,7 +152,7 @@ echo "$cwd"
 cat << EOF >> run_embed_plot_wrapper.json
 {
   "save_fig_dir": null,
-  "positions": "/data/reference/yeast_18S_25S_mods.positions",
+  "positions": "/data/reference/yeast_18S_25S_variants.positions",
   "ambig_model": $AMBIG_MODEL,
   "rna": true,
   "num_threads": $N_THREADS,
@@ -179,7 +180,7 @@ cat << EOF >> train_config.json
   },
   "samples": [
     {
-      "positions_file": "/data/reference/native_yeast_18S_25S_mods_guess.positions",
+      "positions_file": "/data/reference/yeast_18S_25S_modified.positions",
       "fast5_dirs": ["/data/"],
       "bwa_reference": "/data/reference/yeast_25S_18S.fa",
       "fofns": [],
@@ -228,7 +229,7 @@ cat << EOF >> train_config.json
     "normal_emissions": true,
     "hdp_emissions": false,
     "expectation_maximization": true,
-    "em_iterations": 2
+    "em_iterations": $EM_ITERATIONS
   },
   "path_to_bin": "/root/signalAlign/bin",
   "complement_hdp_model": null,
@@ -266,7 +267,7 @@ cat << EOF >> run_config.json
   },
   "samples": [
     {
-      "positions_file": "/data/reference/yeast_18S_25S_mods.positions",
+      "positions_file": "/data/reference/yeast_18S_25S_variants.positions",
       "fast5_dirs": ["/data/"],
       "bwa_reference": "/data/reference/yeast_25S_18S.fa",
       "fofns": [],
@@ -283,7 +284,7 @@ cat << EOF >> run_config.json
       "assignments_dir": null
     },
     {
-      "positions_file": "/data/reference/yeast_18S_25S_mods.positions",
+      "positions_file": "/data/reference/yeast_18S_25S_variants.positions",
       "fast5_dirs": ["/data/"],
       "bwa_reference": "/data/reference/yeast_25S_18S.fa",
       "fofns": [],
@@ -300,7 +301,7 @@ cat << EOF >> run_config.json
       "assignments_dir": null
     },
         {
-      "positions_file": "/data/reference/yeast_18S_25S_mods.positions",
+      "positions_file": "/data/reference/yeast_18S_25S_variants.positions",
       "fast5_dirs": ["/data/"],
       "bwa_reference": "/data/reference/yeast_25S_18S.fa",
       "fofns": [],
@@ -386,13 +387,13 @@ cat << EOF >> train_test_config.json
   "plot_accuracies": {
     "train": {
       "positions_files":
-      ["/data/reference/native_yeast_18S_25S_mods_guess.positions"],
+      ["/data/reference/yeast_18S_25S_modified.positions"],
       "names": ["native_nop58_gal"]
     },
     "test": {
       "positions_files":
-      ["/data/reference/native_yeast_18S_25S_mods_guess.positions",
-        "/data/reference/ivt_yeast_18S_25S_mods.positions"],
+      ["/data/reference/yeast_18S_25S_modified.positions",
+        "/data/reference/yeast_18S_25S_canonical.positions"],
       "names": ["native_cbf5_gal", "canonical_ivt"]
     }
   },
@@ -409,5 +410,5 @@ EOF
 /data/rrna_scripts/scripts/train_test_accuracy_wrapper.py --config train_test_config.json
 }
 
-main
+main "$1"
 
