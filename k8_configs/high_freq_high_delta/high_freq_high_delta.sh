@@ -1,7 +1,7 @@
 #!/bin/bash
 
 THRESHOLD="0.01"
-P_THRESHOLD="0.9"
+P_THRESHOLD="$2"
 N_TRAIN_READS=500
 N_TEST_READS=500
 N_NOP58_GAL_READS=$N_TRAIN_READS
@@ -13,7 +13,7 @@ EM_ITERATIONS=30
 
 
 MODELS_BUCKET="bailey-k8s/rrna_experiments/models/null_model/"
-OUTPUT_BUCKET_TMP="bailey-k8s/rrna_experiments/supervised/probability_sweep/"
+OUTPUT_BUCKET_TMP="bailey-k8s/rrna_experiments/supervised/probability_sweep/high_freq_high_delta/"
 EXPERIMENT_NAME="train_${N_TRAIN_READS}_test_${N_TEST_READS}_prob_${P_THRESHOLD}_em_iterations_${EM_ITERATIONS}"
 OUTPUT_BUCKET="${OUTPUT_BUCKET_TMP}${EXPERIMENT_NAME}/"
 
@@ -100,7 +100,7 @@ run_training_routine() {
       aws s3 cp --no-progress s3://"$MODELS_BUCKET""$model" models
       train_sa "$model" "$1"
       #               tar and upload variant calls
-      aws s3 cp --no-progress train_test.sh s3://"$OUTPUT_BUCKET"
+      aws s3 cp --no-progress high_freq_high_delta.sh s3://"$OUTPUT_BUCKET"
 
       tar -czf "$model".testing.tar.gz -C output/ testing/
       aws s3 mv --no-progress "$model".testing.tar.gz s3://"$OUTPUT_BUCKET"

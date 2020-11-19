@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: andrewbailey-train-test-rrna-0.75-$TS
+  name: andrewbailey-train-test-rrna-0.5-$TS
 spec:
   ttlSecondsAfterFinished: 6000
   template:

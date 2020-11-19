@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: andrewbailey-train-test-rrna-0.9-$TS
+  name: andrewbailey-high-freq-high-delta-0.9-$TS
 spec:
   ttlSecondsAfterFinished: 6000
   template:
@@ -27,6 +27,8 @@ spec:
           env:
             - name: N_THREADS
               value: "30"
+            - name: P_THRESHOLD
+              value: "0.9"
           command:
             - /bin/bash
             - -c
@@ -35,8 +37,8 @@ spec:
               DEBIAN_FRONTEND=noninteractive apt-get -qq update
               DEBIAN_FRONTEND=noninteractive apt-get -qq install -y awscli git
               #             download data
-              aws s3 cp --no-progress s3://bailey-k8s/rrna_yeast_data/train_test.sh .
-              bash train_test.sh "$(N_THREADS)"
+              aws s3 cp --no-progress s3://bailey-k8s/rrna_yeast_data/high_freq_high_delta.sh.sh .
+              bash high_freq_high_delta.sh.sh "$(N_THREADS)" "$(P_THRESHOLD)"
               echo DONE
           volumeMounts:
             - mountPath: /root/.aws
