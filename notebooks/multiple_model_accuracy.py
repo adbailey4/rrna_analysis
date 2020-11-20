@@ -78,7 +78,7 @@ class MultipleModelAccuracy(object):
         accuracy_csv = pd.read_csv(path).sort_values(by=['contig', 'reference_index'])
 
         accuracy_csv['delta1'] = accuracy_csv.reference_index.diff().shift(-1)
-        accuracy_csv['delta2'] = accuracy_csv.reference_index.diff().shift(0)
+        accuracy_csv['delta2'] = np.abs(accuracy_csv.reference_index.diff().shift(0))
         accuracy_csv['delta'] = accuracy_csv[["delta1", "delta2"]].min(axis=1)
         accuracy_csv["in_2prime"] = (((accuracy_csv.variants.shift().isin(["Aa", "Cb", "Gc", "Td", "Tdm"]) &
                                        (accuracy_csv.delta2 <= 5)) |
@@ -114,10 +114,8 @@ class MultipleModelAccuracy(object):
                 model = HmmModel(model_path, rna=True)
             for group, data in round_data.groupby(["contig", "reference_index", "strand"]):
                 mod = "_".join([str(x) for x in group])
-                if (data["percent"].iloc[0] < high_percent and
-                        data["percent"].iloc[0] > low_percent and
-                        data["delta"].iloc[0] > low_delta and
-                        data["delta"].iloc[0] < high_delta):
+                if (low_percent <= data["percent"].iloc[0] <= high_percent and
+                        low_delta <= data["delta"].iloc[0] <= high_delta):
                     plot_me[mod][round_number] = data[key].iloc[0]
                     # other plot
                     if i + 1 == model_n:
