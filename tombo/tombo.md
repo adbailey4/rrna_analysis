@@ -30,3 +30,5 @@
         * `tombo detect_modifications level_sample_compare --fast5-basedirs  /home/ubuntu/rRNA2/ivt/split_fast5/ \
               --alternate-fast5-basedirs /home/ubuntu/rRNA2/Nop58_GAL/split_fast5/ /home/ubuntu/rRNA2/CBF5_GAL/split_fast5/ \
               --statistics-file-basename IVT_vs_CBF5_GAL_and_Nop58_GAL.level_compare_sample --processes 64`
+
+### [HOME](../README.md)

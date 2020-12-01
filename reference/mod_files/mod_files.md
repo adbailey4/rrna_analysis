@@ -8,7 +8,7 @@ And a good secondary article is [here](https://journals.plos.org/plosone/article
     * NOTE: I encoded >95% as just 95%.
 
 ## Position Files
-* The conversion from mod_file.csv to positions files can be found in the [Preprocessing_yeast_rRNA](../notebooks/Preprocessing_yeast_rRNA.ipynb) notebook.
+* The conversion from mod_file.csv to positions files can be found in the [position_file_creation](../notebooks/position_file_creation.ipynb) notebook.
 * NOTE: 25S pos 2346 has 3 possible variants and in the "modified" positions file I chose the most prevalent one.
 
 * All mod positions and corresponding branches `yeast_18S_25S_variants.positions`
@@ -16,4 +16,5 @@ And a good secondary article is [here](https://journals.plos.org/plosone/article
 * IVT `yeast_18S_25S_canonical.positions`
 * pseduoU knockdown `yeast_18S_25S_pseudoU_knockdown.positions`
 * 2'-O methyl knock down `yeast_18S_25S_Omethyl_knockdown.positions`
- 
+
+### [HOME](../../README.md)

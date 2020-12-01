@@ -1,4 +1,4 @@
-#### Reference Sequence Search
+## Reference Sequence Search
 * Data from Jason (SacCer3)
     * "3) a .bed file of annotated pseudo U and 2’O-me sites (if you are interested) based on this online database http://www.sysu.edu.cn/ however it looks like it is no longer available. 4) a genome file containing only a single copy of the yeast 37S rRNA locus." 
     * 20Me yeast bed
@@ -85,3 +85,5 @@
 
 
 * Mod ambig character model is at [`mod_variants.model`](mod_variants.model)
+
+### [HOME](../README.md)
