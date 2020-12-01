@@ -12,8 +12,8 @@
 * `pycoQC -f /home/ubuntu/rRNA2/CBF5_GLU/sequencing_summary.txt -a /home/ubuntu/rRNA2/fastq/06112019_R941_CBF5GLU_noU.2308.sorted.bam -o /home/ubuntu/rRNA2/pycoqc/06112019_R941_CBF5GLU_noU.html`
 * `pycoQC -f /home/ubuntu/rRNA2/ivt/sequencing_summary.txt -a /home/ubuntu/rRNA2/fastq/ivt_20191014_control.2308.sorted.bam -o /home/ubuntu/rRNA2/pycoqc/ivt_20191014_control.html`
 * Results
-    * `pycoQC/ivt_20191014_control.html`
-    * `pycoQC/06_19_19_R941_NOP58GLU_Manny_noU.html`
-    * `pycoQC/06_17_19_R941_NOP58GAL_Manny_noU.html`
-    * `pycoQC/06102019_R941_CBF5GAL_noU.html`
-    * `pycoQC/06112019_R941_CBF5GLU_noU.html`
+    * [ivt_20191014_control.html](ivt_20191014_control.html)
+    * [06_19_19_R941_NOP58GLU_Manny_noU.html](06_19_19_R941_NOP58GLU_Manny_noU.html)
+    * [06_17_19_R941_NOP58GAL_Manny_noU.html](06_17_19_R941_NOP58GAL_Manny_noU.html)
+    * [06102019_R941_CBF5GAL_noU.html](06102019_R941_CBF5GAL_noU.html)
+    * [06112019_R941_CBF5GLU_noU.html](06112019_R941_CBF5GLU_noU.html)

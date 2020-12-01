@@ -213,10 +213,10 @@ class MultipleModelAccuracy(object):
 
         m, b = np.polyfit(delta_values, accuracy_values, 1)
         panel1.plot(delta_values, m * np.array(delta_values) + b,
-                    label=f"slope={round(m, 4)} : intercept={round(b, 4)}")
+                    label=f"slope={round(m, 4)} \n intercept={round(b, 4)}")
 
         panel1.legend(loc='upper center', bbox_to_anchor=(0.5, -0.08),
-                      fancybox=True, shadow=True, ncol=3)
+                      fancybox=True, shadow=True, ncol=4)
         annot = panel1.annotate("", xy=(0, 0), xytext=(20, 20), textcoords="offset points",
                                 bbox=dict(boxstyle="round", fc="w"),
                                 arrowprops=dict(arrowstyle="->"))

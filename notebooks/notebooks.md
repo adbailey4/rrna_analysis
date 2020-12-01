@@ -1,9 +1,8 @@
 # Notebooks
 
 ## Active
-### multiple_model_accuracy_comparison.ipynb   
-* compare the accuracy of prediction across multiple models
-* also plot how model delta is correlated with accuracy
+### supervised_high_prob_high_delta.ipynb   
+* look at accuracy over time of isolated high frequency modifications 
 
 ### yeast_rrna_position_visualization.ipynb
 * Trying to predict rna positions based on tombo and nanocompore data
@@ -13,6 +12,9 @@
 
 
 ## Static
+
+### test_vs_train_accuracy.ipynb   
+* compare recall between test and train reads
 
 ### Preprocessing_yeast_rRNA.ipynb
 * converting `25S_mods.bed` and `18S_mods.bed` into the `yeast_18S_25S_mods.positions` file

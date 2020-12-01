@@ -13,32 +13,33 @@
     
 * References
     * 18S - 1800bp
-        * www.yeastgenome.org
+        * https://www.yeastgenome.org/locus/S000006482/sequence
             * RDN18-1 Location: Chromosome XII 455933..457732
-                * [search/S288C_RDN18-1_RDN18-1_genomic.fa](https://www.yeastgenome.org/locus/S000006482/sequence) 
+                * [search/S288C_RDN18-1_RDN18-1_genomic.fa](search/S288C_RDN18-1_RDN18-1_genomic.fa) 
         * http://fungi.ensembl.org/
             * Chromosome XII: 455,933-457,732
             * Chromosome XII: 465,070-466,869
         * https://rnacentral.org/rna/URS00005F2C2D/559292
-            * [search/18S_rRNA_yeast.fa](https://rnacentral.org/rna/URS00005F2C2D/559292)
-        * https://genome.ucsc.edu/
+            * [search/18S_rRNA_yeast.fa](search/18S_rRNA_yeast.fa)
+        * https://hgdownload.soe.ucsc.edu/goldenPath/sacCer3/chromosomes/
             * chrXII:455933-457732
             * chrXII:465070-466869
-            * [search/yeast_ref.fa](https://hgdownload.soe.ucsc.edu/goldenPath/sacCer3/chromosomes/)
+            * [search/yeast_ref.fa](search/yeast_ref.fa)
     * 25S - 3396bp
         * https://www.yeastgenome.org/locus/S000006484
             * chrXII:455181..451786    
-            * ares_rRNA/reference/searchS288C_RDN25-1_RDN25-1_genomic.fa
+            * [search/S288C_RDN25-1_RDN25-1_genomic.fa](search/S288C_RDN25-1_RDN25-1_genomic.fa)
         * https://genome.ucsc.edu/
             * chrXII:451786-455181
             * chrXII:460923-464318
         * https://rnacentral.org/rna/URS00005F2C2D/559292
             * XII	451,786-455,181
             * XII	460,923-464,318
-            * [search/25S_rRNA_yeast.fa](https://rnacentral.org/rna/URS000061F377/559292)
+            * [search/25S_rRNA_yeast.fa](search/25S_rRNA_yeast.fa)
 
 * Final Reference Sequence
-    * __yeast_25S_18S.fa__
+    * combined from https://www.yeastgenome.org/ and matched with other searches for the genome
+    * [__yeast_25S_18S.fa__](yeast_25S_18S.fa)
 
 ## Nucleotide Encodings 
 * Nucleotide Encodings can now be done via a tsv model file
