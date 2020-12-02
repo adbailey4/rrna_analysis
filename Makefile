@@ -12,3 +12,8 @@ allkmers:
 	aws s3 cp k8_configs/all_kmers/all_kmers.sh s3://bailey-k8s/rrna_yeast_data/
 	# Run a kubernetes job with our image, prefix with USERNAME and timestamp
 	TS=`date +"%Y%m%d-%H%M%S"` envsubst < k8_configs/all_kmers/all_kmers.yml | kubectl create -f -
+
+gdt:
+	aws s3 cp k8_configs/gaussian_distribution_testing/gaussian_distribution_testing.sh s3://bailey-k8s/rrna_yeast_data/
+	# Run a kubernetes job with our image, prefix with USERNAME and timestamp
+	TS=`date +"%Y%m%d-%H%M%S"` envsubst < k8_configs/gaussian_distribution_testing/gaussian_distribution_testing.yml | kubectl create -f -

@@ -23,7 +23,7 @@ spec:
       containers:
         - name: main
           imagePullPolicy: Always
-          image: ucscbailey/signalalign:bailey-dev
+          image: ucscbailey/signalalign@sha256:7a60d7e5b8298c77acb43a9cb499ae81ce197fa476f4e4a26ed5f492379bb27b
           env:
             - name: N_THREADS
               value: "30"
