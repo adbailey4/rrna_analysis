@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: andrewbailey-gaussian-median-2-$TS
+  name: andrewbailey-gaussian-mean-0-$TS
 spec:
   ttlSecondsAfterFinished: 6000
   template:
@@ -23,14 +23,14 @@ spec:
       containers:
         - name: main
           imagePullPolicy: Always
-          image: ucscbailey/signalalign@sha256:7a60d7e5b8298c77acb43a9cb499ae81ce197fa476f4e4a26ed5f492379bb27b
+          image: ucscbailey/signalalign@sha256:816533f06f4df1bc8b099d812047c080d0da322a7f738261aaaa13a571beb364
           env:
             - name: N_THREADS
               value: "30"
             - name: USE_MEDIAN
-              value: "true"
+              value: "false"
             - name: MIN_SD
-              value: "2"
+              value: "0"
           command:
             - /bin/bash
             - -c

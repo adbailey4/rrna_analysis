@@ -14,7 +14,7 @@ USE_MEDIAN="$2"
 MIN_SD="$3"
 
 MODELS_BUCKET="bailey-k8s/rrna_experiments/models/null_model/"
-OUTPUT_BUCKET_TMP="bailey-k8s/rrna_experiments/supervised/probability_sweep/high_freq_high_delta/"
+OUTPUT_BUCKET_TMP="bailey-k8s/rrna_experiments/supervised/gaussian_distribution_testing/"
 EXPERIMENT_NAME="train_${N_TRAIN_READS}_test_${N_TEST_READS}_prob_${P_THRESHOLD}_em_iterations_${EM_ITERATIONS}_USE_MEDIAN_${USE_MEDIAN}_MIN_SD_${MIN_SD}"
 OUTPUT_BUCKET="${OUTPUT_BUCKET_TMP}${EXPERIMENT_NAME}/"
 
@@ -101,7 +101,7 @@ run_training_routine() {
       aws s3 cp --no-progress s3://"$MODELS_BUCKET""$model" models
       train_sa "$model" "$1"
       #               tar and upload variant calls
-      aws s3 cp --no-progress high_freq_high_delta.sh s3://"$OUTPUT_BUCKET"
+      aws s3 cp --no-progress gaussian_distribution_testing.sh s3://"$OUTPUT_BUCKET"
 
       tar -czf "$model".testing.tar.gz -C output/ testing/
       aws s3 mv --no-progress "$model".testing.tar.gz s3://"$OUTPUT_BUCKET"
@@ -153,7 +153,7 @@ echo "$cwd"
 cat << EOF >> run_embed_plot_wrapper.json
 {
   "save_fig_dir": null,
-  "positions": "/data/reference/high_freq_high_delta/hfhd_yeast_18S_25S_variants.positions",
+  "positions": "/data/reference/high_freq_high_delta/yeast_18S_25S_variants.positions",
   "ambig_model": $AMBIG_MODEL,
   "rna": true,
   "num_threads": $N_THREADS,
@@ -181,7 +181,7 @@ cat << EOF >> train_config.json
   },
   "samples": [
     {
-      "positions_file": "/data/reference/high_freq_high_delta/hfhd_yeast_18S_25S_modified.positions",
+      "positions_file": "/data/reference/high_freq_high_delta/yeast_18S_25S_modified.positions",
       "fast5_dirs": ["/data/"],
       "bwa_reference": "/data/reference/yeast_25S_18S.fa",
       "fofns": [],
@@ -270,7 +270,7 @@ cat << EOF >> run_config.json
   },
   "samples": [
     {
-      "positions_file": "/data/reference/high_freq_high_delta/hfhd_yeast_18S_25S_variants.positions",
+      "positions_file": "/data/reference/high_freq_high_delta/yeast_18S_25S_variants.positions",
       "fast5_dirs": ["/data/"],
       "bwa_reference": "/data/reference/yeast_25S_18S.fa",
       "fofns": [],
@@ -287,7 +287,7 @@ cat << EOF >> run_config.json
       "assignments_dir": null
     },
     {
-      "positions_file": "/data/reference/high_freq_high_delta/hfhd_yeast_18S_25S_variants.positions",
+      "positions_file": "/data/reference/high_freq_high_delta/yeast_18S_25S_variants.positions",
       "fast5_dirs": ["/data/"],
       "bwa_reference": "/data/reference/yeast_25S_18S.fa",
       "fofns": [],
@@ -304,7 +304,7 @@ cat << EOF >> run_config.json
       "assignments_dir": null
     },
         {
-      "positions_file": "/data/reference/high_freq_high_delta/hfhd_yeast_18S_25S_variants.positions",
+      "positions_file": "/data/reference/high_freq_high_delta/yeast_18S_25S_variants.positions",
       "fast5_dirs": ["/data/"],
       "bwa_reference": "/data/reference/yeast_25S_18S.fa",
       "fofns": [],
@@ -390,13 +390,13 @@ cat << EOF >> train_test_config.json
   "plot_accuracies": {
     "train": {
       "positions_files":
-      ["/data/reference/high_freq_high_delta/hfhd_yeast_18S_25S_modified.positions"],
+      ["/data/reference/high_freq_high_delta/yeast_18S_25S_modified.positions"],
       "names": ["native_nop58_gal"]
     },
     "test": {
       "positions_files":
-      ["/data/reference/high_freq_high_delta/hfhd_yeast_18S_25S_modified.positions",
-        "/data/reference/high_freq_high_delta/hfhd_yeast_18S_25S_canonical.positions"],
+      ["/data/reference/high_freq_high_delta/yeast_18S_25S_modified.positions",
+        "/data/reference/high_freq_high_delta/yeast_18S_25S_canonical.positions"],
       "names": ["native_cbf5_gal", "canonical_ivt"]
     }
   },
