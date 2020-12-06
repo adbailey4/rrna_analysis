@@ -17,3 +17,8 @@ gdt:
 	aws s3 cp k8_configs/gaussian_distribution_testing/gaussian_distribution_testing.sh s3://bailey-k8s/rrna_yeast_data/
 	# Run a kubernetes job with our image, prefix with USERNAME and timestamp
 	TS=`date +"%Y%m%d-%H%M%S"` envsubst < k8_configs/gaussian_distribution_testing/gaussian_distribution_testing.yml | kubectl create -f -
+
+ockt:
+	aws s3 cp k8_configs/only_covered_kmers_training/only_covered_kmers_training.sh s3://bailey-k8s/rrna_yeast_data/
+	# Run a kubernetes job with our image, prefix with USERNAME and timestamp
+	TS=`date +"%Y%m%d-%H%M%S"` envsubst < k8_configs/only_covered_kmers_training/only_covered_kmers_training.yml | kubectl create -f -

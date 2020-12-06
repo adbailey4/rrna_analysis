@@ -10,17 +10,18 @@ N_CBF5_GAL_READS=$N_TEST_READS
 EM_ITERATIONS=30
 #N_CBF5_GLU_READS=100
 #N_NOP58_GLU_READS=100
-USE_MEDIAN="$2"
-MIN_SD="$3"
+USE_MEDIAN="false"
+MIN_SD=2
 
 MODELS_BUCKET="bailey-k8s/rrna_experiments/models/null_model/"
-OUTPUT_BUCKET_TMP="bailey-k8s/rrna_experiments/supervised/gaussian_distribution_testing/"
-EXPERIMENT_NAME="train_${N_TRAIN_READS}_test_${N_TEST_READS}_prob_${P_THRESHOLD}_em_iterations_${EM_ITERATIONS}_USE_MEDIAN_${USE_MEDIAN}_MIN_SD_${MIN_SD}"
+OUTPUT_BUCKET_TMP="bailey-k8s/rrna_experiments/supervised/only_covered_kmers_training/"
+EXPERIMENT_NAME="train_${N_TRAIN_READS}_test_${N_TEST_READS}_prob_${P_THRESHOLD}_em_iterations_${EM_ITERATIONS}_all_kmers"
 OUTPUT_BUCKET="${OUTPUT_BUCKET_TMP}${EXPERIMENT_NAME}/"
 
 
 main() {
   start=$SECONDS
+  echo "$TRAINING_KMERS"
   download_files
   run_training_routine "$1"
   duration=$(( SECONDS - start ))
@@ -101,7 +102,7 @@ run_training_routine() {
       aws s3 cp --no-progress s3://"$MODELS_BUCKET""$model" models
       train_sa "$model" "$1"
       #               tar and upload variant calls
-      aws s3 cp --no-progress gaussian_distribution_testing.sh s3://"$OUTPUT_BUCKET"
+      aws s3 cp --no-progress only_covered_kmers_training.sh s3://"$OUTPUT_BUCKET"
 
       tar -czf "$model".testing.tar.gz -C output/ testing/
       aws s3 mv --no-progress "$model".testing.tar.gz s3://"$OUTPUT_BUCKET"
@@ -253,7 +254,8 @@ cat << EOF >> train_config.json
   "mod_only": true,
   "delete_alignments": false,
   "use_median": $USE_MEDIAN,
-  "min_sd": $MIN_SD
+  "min_sd": $MIN_SD,
+  "training_kmers": "/data/reference/kmer_lists/all_kmers.txt"
 }
 EOF
 

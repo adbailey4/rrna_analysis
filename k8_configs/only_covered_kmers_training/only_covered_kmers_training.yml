@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: andrewbailey-gaussian-median-0-$TS
+  name: andrewbailey-covered-kmers-all-$TS
 spec:
   ttlSecondsAfterFinished: 6000
   template:
@@ -23,14 +23,10 @@ spec:
       containers:
         - name: main
           imagePullPolicy: Always
-          image: ucscbailey/signalalign@sha256:816533f06f4df1bc8b099d812047c080d0da322a7f738261aaaa13a571beb364
+          image: ucscbailey/signalalign@sha256:d868685fa01ef72b83c9b914c760cbfda309a8966569cffab503a5a34b28c82a
           env:
             - name: N_THREADS
               value: "30"
-            - name: USE_MEDIAN
-              value: "true"
-            - name: MIN_SD
-              value: "0"
           command:
             - /bin/bash
             - -c
@@ -39,8 +35,8 @@ spec:
               DEBIAN_FRONTEND=noninteractive apt-get -qq update
               DEBIAN_FRONTEND=noninteractive apt-get -qq install -y awscli git python3-distutils
               #             download data
-              aws s3 cp --no-progress s3://bailey-k8s/rrna_yeast_data/gaussian_distribution_testing.sh .
-              bash gaussian_distribution_testing.sh "$(N_THREADS)" "$(USE_MEDIAN)" "$(MIN_SD)"
+              aws s3 cp --no-progress s3://bailey-k8s/rrna_yeast_data/only_covered_kmers_training.sh .
+              bash only_covered_kmers_training.sh "$(N_THREADS)"
               echo DONE
           volumeMounts:
             - mountPath: /root/.aws
@@ -49,6 +45,9 @@ spec:
               name: scratch-volume
           resources:
             limits:
+#              cpu: 2
+#              memory: "10Gi"
+#              ephemeral-storage: "350Gi"
               cpu: 30
               memory: "150Gi"
               ephemeral-storage: "350Gi"
