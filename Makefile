@@ -22,3 +22,8 @@ ockt:
 	aws s3 cp k8_configs/only_covered_kmers_training/only_covered_kmers_training.sh s3://bailey-k8s/rrna_yeast_data/
 	# Run a kubernetes job with our image, prefix with USERNAME and timestamp
 	TS=`date +"%Y%m%d-%H%M%S"` envsubst < k8_configs/only_covered_kmers_training/only_covered_kmers_training.yml | kubectl create -f -
+
+iant:
+	aws s3 cp k8_configs/ivt_and_native_training/ivt_and_native_training.sh s3://bailey-k8s/rrna_yeast_data/
+	# Run a kubernetes job with our image, prefix with USERNAME and timestamp
+	TS=`date +"%Y%m%d-%H%M%S"` envsubst < k8_configs/ivt_and_native_training/ivt_and_native_training.yml | kubectl create -f -
