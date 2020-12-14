@@ -7,11 +7,11 @@ N_TEST_READS=500
 N_NOP58_GAL_READS=$N_TRAIN_READS
 N_IVT_READS=$N_TEST_READS
 N_CBF5_GAL_READS=$N_TEST_READS
-EM_ITERATIONS=30
+EM_ITERATIONS=60
 #N_CBF5_GLU_READS=100
 #N_NOP58_GLU_READS=100
-USE_MEDIAN="$2"
-MIN_SD="$3"
+USE_MEDIAN="false"
+MIN_SD="0"
 
 MODELS_BUCKET="bailey-k8s/rrna_experiments/models/null_model/"
 OUTPUT_BUCKET_TMP="bailey-k8s/rrna_experiments/supervised/gaussian_distribution_testing/"
@@ -123,6 +123,7 @@ run_training_routine() {
 
       tar -czf "$model".training_distributions.tar.gz -C output/ training_distributions/
       aws s3 mv --no-progress "$model".training_distributions.tar.gz s3://"$OUTPUT_BUCKET"
+      aws s3 sync --no-progress training_distributions s3://"$OUTPUT_BUCKET"training_distributions
 
       tar -czf "$model".training_models.tar.gz -C output/ training_models/
       aws s3 mv --no-progress "$model".training_models.tar.gz s3://"$OUTPUT_BUCKET"

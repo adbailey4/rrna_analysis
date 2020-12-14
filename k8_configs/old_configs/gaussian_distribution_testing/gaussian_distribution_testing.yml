@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: andrewbailey-gaussian-median-0-$TS
+  name: andrewbailey-gaussian-mean-0-60-$TS
 spec:
   ttlSecondsAfterFinished: 6000
   template:
@@ -28,7 +28,7 @@ spec:
             - name: N_THREADS
               value: "30"
             - name: USE_MEDIAN
-              value: "true"
+              value: "false"
             - name: MIN_SD
               value: "0"
           command:
@@ -51,7 +51,7 @@ spec:
             limits:
               cpu: 30
               memory: "150Gi"
-              ephemeral-storage: "350Gi"
+              ephemeral-storage: "700Gi"
       restartPolicy: Never
       volumes:
         - name: scratch-volume
