@@ -5,3 +5,4 @@ CMakeLists.txt
 gdrive
 cmake-build-debug
 notebooks/rrna_data
+tombo/de_novo

@@ -32,3 +32,18 @@ testing:
 	aws s3 cp k8_configs/testing/testing.sh s3://bailey-k8s/rrna_yeast_data/
 	# Run a kubernetes job with our image, prefix with USERNAME and timestamp
 	TS=`date +"%Y%m%d-%H%M%S"` envsubst < k8_configs/testing/testing.yml | kubectl create -f -
+
+unsup:
+	aws s3 cp k8_configs/unsupervised/unsupervised.sh s3://bailey-k8s/rrna_yeast_data/
+	# Run a kubernetes job with our image, prefix with USERNAME and timestamp
+	TS=`date +"%Y%m%d-%H%M%S"` envsubst < k8_configs/unsupervised/unsupervised.yml | kubectl create -f -
+
+altc:
+	aws s3 cp k8_configs/alt_canonical/alt_canonical.sh s3://bailey-k8s/rrna_yeast_data/scripts/
+	# Run a kubernetes job with our image, prefix with USERNAME and timestamp
+	TS=`date +"%Y%m%d-%H%M%S"` envsubst < k8_configs/alt_canonical/alt_canonical.yml | kubectl create -f -
+
+inference:
+	aws s3 cp k8_configs/inference/inference.sh s3://bailey-k8s/rrna_yeast_data/scripts/
+	# Run a kubernetes job with our image, prefix with USERNAME and timestamp
+	TS=`date +"%Y%m%d-%H%M%S"` envsubst < k8_configs/inference/inference.yml | kubectl create -f -

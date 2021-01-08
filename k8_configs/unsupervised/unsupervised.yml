@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: andrewbailey-unsupervised-90-noivt-$TS
+  name: andrewbailey-unsupervised-90-ivt-$TS
 spec:
   ttlSecondsAfterFinished: 6000
   template:
@@ -34,7 +34,7 @@ spec:
             - name: UNSUP
               value: "true"
             - name: USE_IVT_TRAINING
-              value: "false"
+              value: "true"
 
           command:
             - /bin/bash

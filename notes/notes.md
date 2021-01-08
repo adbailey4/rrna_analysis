@@ -643,3 +643,10 @@ awk '{print $2}' NOP58GLU.2308.full_length.25S.readdb | xargs -I{} cp {} ../Nop5
 awk '{print $2}' NOP58GLU.2308.full_length.18S.readdb | xargs -I{} cp {} ../Nop58_GLU_18S_full_length/
 
 
+DEBIAN_FRONTEND=noninteractive apt-get -qq update
+DEBIAN_FRONTEND=noninteractive apt-get -qq install -y awscli git python3-distutils
+cp -r .aws ~/.aws
+aws s3 ls
+bash inference.sh 4
+
+aws s3 sync s3://nanopore-human-wgs/rna/UBC_Run5_20171031_DirectRNA .

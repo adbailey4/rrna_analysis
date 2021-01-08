@@ -12,9 +12,9 @@ USE_IVT_TRAINING="$5"
 
 FREQ_THRESHOLD="$2"
 
-N_TRAIN_READS=500
-N_TEST_READS=500
-EM_ITERATIONS=30
+N_TRAIN_READS=10
+N_TEST_READS=10
+EM_ITERATIONS=2
 
 THRESHOLD="0.01"
 P_THRESHOLD="0.5"
@@ -32,7 +32,6 @@ fi
 
 if [[ "$unsupervised" == "true" ]]
   then
-    USE_IVT_TRAINING="true"
     NATIVE_TRAIN_POS="\"/data/reference/unsupervised_mod_files/yeast_18S_25S_min_prob_${FREQ_THRESHOLD}_unsupervised.positions\""
   else
     NATIVE_TRAIN_POS="\"/data/reference/yeast_18S_25S_modified.positions\""
@@ -41,6 +40,7 @@ IVT_TRAIN_POS="\"/data/reference/yeast_18S_25S_canonical.positions\""
 
 
 N_NOP58_GAL_READS=$N_TRAIN_READS
+N_TRAIN_IVT_READS=$N_TRAIN_READS
 N_IVT_READS=$N_TEST_READS
 N_CBF5_GAL_READS=$N_TEST_READS
 #N_CBF5_GLU_READS=100

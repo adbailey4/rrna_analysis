@@ -11,7 +11,7 @@ EM_ITERATIONS=30
 #N_CBF5_GLU_READS=100
 #N_NOP58_GLU_READS=100
 USE_MEDIAN="false"
-MIN_SD=2
+MIN_SD=0
 
 MODELS_BUCKET="bailey-k8s/rrna_experiments/models/null_model/"
 OUTPUT_BUCKET_TMP="bailey-k8s/rrna_experiments/supervised/only_covered_kmers_training/"
@@ -107,6 +107,9 @@ run_training_routine() {
       tar -czf "$model".testing.tar.gz -C output/ testing/
       aws s3 mv --no-progress "$model".testing.tar.gz s3://"$OUTPUT_BUCKET"
 
+      tar -czf "$model".all_variant_calls.tar.gz -C output/ all_variant_calls/
+      aws s3 mv --no-progress "$model".all_variant_calls.tar.gz s3://"$OUTPUT_BUCKET"
+
       tar -czf "$model".testing_accuracy.tar.gz -C output/ testing_accuracy/
       aws s3 mv --no-progress "$model".testing_accuracy.tar.gz s3://"$OUTPUT_BUCKET"
 
@@ -124,6 +127,7 @@ run_training_routine() {
 
       tar -czf "$model".training_distributions.tar.gz -C output/ training_distributions/
       aws s3 mv --no-progress "$model".training_distributions.tar.gz s3://"$OUTPUT_BUCKET"
+      aws s3 sync --no-progress output/training_distributions s3://"$OUTPUT_BUCKET"training_distributions
 
       tar -czf "$model".training_models.tar.gz -C output/ training_models/
       aws s3 mv --no-progress "$model".training_models.tar.gz s3://"$OUTPUT_BUCKET"
@@ -159,7 +163,7 @@ cat << EOF >> run_embed_plot_wrapper.json
   "rna": true,
   "num_threads": $N_THREADS,
   "debug": false,
-  "mod_only": true,
+  "mod_only": false,
   "force_event": false,
   "force_pos_hist": false,
   "reference": "/data/reference/yeast_25S_18S.fa",
@@ -251,7 +255,7 @@ cat << EOF >> train_config.json
   "rna": true,
   "ambig_model": $AMBIG_MODEL,
   "built_alignments": null,
-  "mod_only": true,
+  "mod_only": false,
   "delete_alignments": false,
   "use_median": $USE_MEDIAN,
   "min_sd": $MIN_SD,
@@ -375,7 +379,7 @@ cat << EOF >> run_config.json
   "rna": true,
   "ambig_model": $AMBIG_MODEL,
   "built_alignments": null,
-  "mod_only": true,
+  "mod_only": false,
   "delete_alignments": false
 }
 EOF

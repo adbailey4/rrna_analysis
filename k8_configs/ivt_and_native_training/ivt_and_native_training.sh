@@ -16,7 +16,7 @@ MIN_SD=0
 
 MODELS_BUCKET="bailey-k8s/rrna_experiments/models/null_model/"
 OUTPUT_BUCKET_TMP="bailey-k8s/rrna_experiments/supervised/ivt_and_native_training/"
-EXPERIMENT_NAME="train_${N_TRAIN_READS}_test_${N_TEST_READS}_prob_${P_THRESHOLD}_em_iterations_${EM_ITERATIONS}_all_kmers"
+EXPERIMENT_NAME="train_${N_TRAIN_READS}_test_${N_TEST_READS}_prob_${P_THRESHOLD}_em_iterations_${EM_ITERATIONS}_all_kmers_ivt_and_native_training"
 OUTPUT_BUCKET="${OUTPUT_BUCKET_TMP}${EXPERIMENT_NAME}/"
 
 
@@ -110,6 +110,9 @@ run_training_routine() {
       tar -czf "$model".testing.tar.gz -C output/ testing/
       aws s3 mv --no-progress "$model".testing.tar.gz s3://"$OUTPUT_BUCKET"
 
+      tar -czf "$model".all_variant_calls.tar.gz -C output/ all_variant_calls/
+      aws s3 mv --no-progress "$model".all_variant_calls.tar.gz s3://"$OUTPUT_BUCKET"
+
       tar -czf "$model".testing_accuracy.tar.gz -C output/ testing_accuracy/
       aws s3 mv --no-progress "$model".testing_accuracy.tar.gz s3://"$OUTPUT_BUCKET"
 
@@ -127,6 +130,7 @@ run_training_routine() {
 
       tar -czf "$model".training_distributions.tar.gz -C output/ training_distributions/
       aws s3 mv --no-progress "$model".training_distributions.tar.gz s3://"$OUTPUT_BUCKET"
+      aws s3 sync --no-progress output/training_distributions s3://"$OUTPUT_BUCKET"training_distributions
 
       tar -czf "$model".training_models.tar.gz -C output/ training_models/
       aws s3 mv --no-progress "$model".training_models.tar.gz s3://"$OUTPUT_BUCKET"
