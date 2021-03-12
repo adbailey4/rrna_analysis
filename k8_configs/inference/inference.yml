@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: andrewbailey-inference-alt-c-$TS
+  name: andrewbailey-inference-alt-c-depletions-$TS
 spec:
   ttlSecondsAfterFinished: 6000
   template:
@@ -31,9 +31,9 @@ spec:
               name: scratch-volume
           resources:
             limits:
-              #              cpu: 2
-              #              memory: "10Gi"
-              #              ephemeral-storage: "350Gi"
+#              cpu: 5
+#              memory: "10Gi"
+#              ephemeral-storage: "350Gi"
               cpu: 30
               memory: "200Gi"
               ephemeral-storage: "350Gi"

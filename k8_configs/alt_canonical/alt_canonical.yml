@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: andrewbailey-alt-canonical-unsupervised-$TS
+  name: andrewbailey-alt-canonical-unsup-pre-trained-$TS
 spec:
   ttlSecondsAfterFinished: 6000
   template:
@@ -58,8 +58,8 @@ spec:
 #              memory: "10Gi"
 #              ephemeral-storage: "350Gi"
               cpu: 30
-              memory: "200Gi"
-              ephemeral-storage: "350Gi"
+              memory: "250Gi"
+              ephemeral-storage: "500Gi"
       restartPolicy: Never
       volumes:
         - name: scratch-volume

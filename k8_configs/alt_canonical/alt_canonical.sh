@@ -1,8 +1,16 @@
 #!/bin/bash
 # A:n C:o G:p T:q
-MODELS_BUCKET="bailey-k8s/rrna_experiments/models/alt_canonical/"
-OUTPUT_BUCKET_TMP="bailey-k8s/rrna_experiments/alt_canonical/gaussian/"
+#MODELS_BUCKET="bailey-k8s/rrna_experiments/models/alt_canonical/"
+#OUTPUT_BUCKET_TMP="bailey-k8s/rrna_experiments/alt_canonical/gaussian/"
+#MODELS_BUCKET="bailey-k8s/rrna_experiments/models/inference_models/"
+MODELS_BUCKET="bailey-k8s/rrna_experiments/models/alt_c_all_kmers_round30/"
+OUTPUT_BUCKET_TMP="bailey-k8s/rrna_experiments/alt_canonical/gaussian_60/"
+#MODELS_BUCKET="bailey-k8s/rrna_experiments/models/alt_canonical_round5/"
+#OUTPUT_BUCKET_TMP="bailey-k8s/rrna_experiments/alt_canonical/gaussian/"
 #ALPHABET="ACGTabcdefghijklm"
+#MODELS_BUCKET="bailey-k8s/rrna_experiments/models/alt_canonical_6mer/"
+#OUTPUT_BUCKET_TMP="bailey-k8s/rrna_experiments/supervised/6mer/"
+
 ALPHABET="\"ACGTabcdefghijklmnopq\""
 
 #all_kmers="true"
@@ -27,7 +35,7 @@ AMBIG_MODEL="\"/data/reference/alt_canonical_distribution/alt_canonical_mod_vari
 
 if [[ "$all_kmers" == "true" ]]
   then
-    KMERS_LIST_FILE="\"/data/reference/kmer_lists/all_kmers.txt\""
+    KMERS_LIST_FILE="null"
     MOD_ONLY="false"
   else
     KMERS_LIST_FILE="null"
@@ -52,7 +60,7 @@ N_CBF5_GAL_READS=$N_TEST_READS
 #N_NOP58_GLU_READS=100
 
 
-EXPERIMENT_NAME="train_${N_TRAIN_READS}_test_${N_TEST_READS}_prob_${P_THRESHOLD}_em_iterations_${EM_ITERATIONS}_gaussian_${use_gaussian}_FREQ_THRESHOLD_${FREQ_THRESHOLD}_USE_IVT_TRAINING_${USE_IVT_TRAINING}_unsupervised_${unsupervised}_all_kmers_${all_kmers}"
+EXPERIMENT_NAME="train_${N_TRAIN_READS}_test_${N_TEST_READS}_prob_${P_THRESHOLD}_em_iterations_${EM_ITERATIONS}_gaussian_${use_gaussian}_FREQ_THRESHOLD_${FREQ_THRESHOLD}_USE_IVT_TRAINING_${USE_IVT_TRAINING}_unsupervised_${unsupervised}_all_kmers_${all_kmers}_alt_c"
 OUTPUT_BUCKET="${OUTPUT_BUCKET_TMP}${EXPERIMENT_NAME}/"
 
 main() {

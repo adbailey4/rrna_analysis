@@ -59,7 +59,7 @@ spec:
 #              ephemeral-storage: "350Gi"
               cpu: 30
               memory: "250Gi"
-              ephemeral-storage: "500Gi"
+              ephemeral-storage: "350Gi"
       restartPolicy: Never
       volumes:
         - name: scratch-volume

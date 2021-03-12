@@ -2,7 +2,7 @@
 # A:n C:o G:p T:q
 MODELS_BUCKET="bailey-k8s/rrna_experiments/models/inference_models/"
 model="round30_alt_canonical_supervised_500_500.model"
-OUTPUT_BUCKET_TMP="bailey-k8s/rrna_experiments/inference/round30_alt_canonical_supervised_500_500/"
+OUTPUT_BUCKET_TMP="bailey-k8s/rrna_experiments/inference/round30_alt_canonical_supervised_500_500_with_depletions/"
 #ALPHABET="ACGTabcdefghijklm"
 #ALPHABET="\"ACGTabcdefghijklmnopq\""
 
@@ -15,8 +15,9 @@ AMBIG_MODEL2="/data/reference/alt_canonical_distribution/alt_canonical_mod_varia
 
 N_IVT_READS=$N_TEST_READS
 N_CBF5_GAL_READS=$N_TEST_READS
-#N_CBF5_GLU_READS=100
-#N_NOP58_GLU_READS=100
+N_CBF5_GLU_READS=$N_TEST_READS
+N_NOP58_GLU_READS=$N_TEST_READS
+N_NOP58_GAL_READS=$N_TEST_READS
 
 OUTPUT_BUCKET="${OUTPUT_BUCKET_TMP}${model}/"
 
@@ -37,15 +38,15 @@ download_files() {
   echo "Download REFERENCE"
   aws s3 sync --no-progress s3://bailey-k8s/rrna_yeast_data/reference/ reference
 
-#  echo "Download NOP58_GAL"
-#  aws s3 sync --no-progress s3://bailey-k8s/rrna_yeast_data/NOP58_GAL/ NOP58_GAL
-#  tar -xzf NOP58_GAL/Nop58_GAL_25S_full_length_fast5.tar.gz -C NOP58_GAL && rm NOP58_GAL/Nop58_GAL_25S_full_length_fast5.tar.gz
-#  tar -xzf NOP58_GAL/Nop58_GAL_18S_full_length_fast5.tar.gz -C NOP58_GAL && rm NOP58_GAL/Nop58_GAL_18S_full_length_fast5.tar.gz
-#  sed -i 's='/data/'='"$cwd"/'=g' "$cwd"/NOP58_GAL/kube_NOP58GAL.2308.full_length.18S.readdb
-#  sed -i 's='/data/'='"$cwd"/'=g' "$cwd"/NOP58_GAL/kube_NOP58GAL.2308.full_length.25S.readdb
-#  head -"$N_NOP58_GAL_READS"  "$cwd"/NOP58_GAL/kube_NOP58GAL.2308.full_length.18S.readdb > "$cwd"/NOP58_GAL/run_ngal.readdb
-#  head -"$N_NOP58_GAL_READS"  "$cwd"/NOP58_GAL/kube_NOP58GAL.2308.full_length.25S.readdb >> "$cwd"/NOP58_GAL/run_ngal.readdb
-#  echo "NOP58_GAL Done"
+  echo "Download NOP58_GAL"
+  aws s3 sync --no-progress s3://bailey-k8s/rrna_yeast_data/NOP58_GAL/ NOP58_GAL
+  tar -xzf NOP58_GAL/Nop58_GAL_25S_full_length_fast5.tar.gz -C NOP58_GAL && rm NOP58_GAL/Nop58_GAL_25S_full_length_fast5.tar.gz
+  tar -xzf NOP58_GAL/Nop58_GAL_18S_full_length_fast5.tar.gz -C NOP58_GAL && rm NOP58_GAL/Nop58_GAL_18S_full_length_fast5.tar.gz
+  sed -i 's='/data/'='$cwd/'=g' $cwd/NOP58_GAL/kube_NOP58GAL.2308.full_length.18S.readdb
+  sed -i 's='/data/'='$cwd/'=g' $cwd/NOP58_GAL/kube_NOP58GAL.2308.full_length.25S.readdb
+  head -"$N_NOP58_GAL_READS"  "$cwd"/NOP58_GAL/kube_NOP58GAL.2308.full_length.18S.readdb > "$cwd"/NOP58_GAL/run_ngal.readdb
+  head -"$N_NOP58_GAL_READS"  "$cwd"/NOP58_GAL/kube_NOP58GAL.2308.full_length.25S.readdb >> "$cwd"/NOP58_GAL/run_ngal.readdb
+  echo "NOP58_GAL Done"
 
   echo "Download IVT"
   aws s3 sync --no-progress s3://bailey-k8s/rrna_yeast_data/IVT/ IVT
@@ -67,25 +68,25 @@ download_files() {
   head -"$N_CBF5_GAL_READS"  "$cwd"/CBF5_GAL/kube_CBF5GAL_full_length.25S.readdb >> "$cwd"/CBF5_GAL/run_cgal.readdb
   echo "CBF5_GAL Done"
 
-#  echo "Download NOP58_GLU"
-#  aws s3 sync --no-progress s3://bailey-k8s/rrna_yeast_data/NOP58_GLU/ NOP58_GLU
-#  tar -xzf NOP58_GLU/Nop58_GLU_25S_full_length.tar.gz -C NOP58_GLU && rm NOP58_GLU/Nop58_GLU_25S_full_length.tar.gz
-#  tar -xzf NOP58_GLU/Nop58_GLU_18S_full_length.tar.gz -C NOP58_GLU && rm NOP58_GLU/Nop58_GLU_18S_full_length.tar.gz
-#  sed -i 's='/data/'='$cwd/'=g' "$cwd"/NOP58_GLU/kube_Nop58GLU_full_length.18S.readdb
-#  sed -i 's='/data/'='$cwd/'=g' "$cwd"/NOP58_GLU/kube_Nop58GLU_full_length.25S.readdb
-#  head -"$N_NOP58_GLU_READS"  "$cwd"/NOP58_GLU/kube_Nop58GLU_full_length.18S.readdb > "$cwd"/NOP58_GLU/run_nglu.readdb
-#  head -"$N_NOP58_GLU_READS"  "$cwd"/NOP58_GLU/kube_Nop58GLU_full_length.25S.readdb >> "$cwd"/NOP58_GLU/run_nglu.readdb
-#  echo "NOP58_GLU Done"
-#
-#  echo "Download CBF5_GLU"
-#  aws s3 sync --no-progress s3://bailey-k8s/rrna_yeast_data/CBF5_GLU/ CBF5_GLU
-#  tar -xzf CBF5_GLU/CBF5_GLU_25S_full_length.tar.gz -C CBF5_GLU && rm CBF5_GLU/CBF5_GLU_25S_full_length.tar.gz
-#  tar -xzf CBF5_GLU/CBF5_GLU_18S_full_length.tar.gz -C CBF5_GLU && rm CBF5_GLU/CBF5_GLU_18S_full_length.tar.gz
-#  sed -i 's='/data/'='$cwd/'=g' "$cwd"/CBF5_GLU/kube_CBF5GLU_full_length.18S.readdb
-#  sed -i 's='/data/'='$cwd/'=g' "$cwd"/CBF5_GLU/kube_CBF5GLU_full_length.25S.readdb
-#  head -"$N_CBF5_GLU_READS"  "$cwd"/CBF5_GLU/kube_CBF5GLU_full_length.18S.readdb  > "$cwd"/CBF5_GLU/run_cglu.readdb
-#  head -"$N_CBF5_GLU_READS"  "$cwd"/CBF5_GLU/kube_CBF5GLU_full_length.25S.readdb  >> "$cwd"/CBF5_GLU/run_cglu.readdb
-#  echo "CBF5_GLU Done"
+  echo "Download NOP58_GLU"
+  aws s3 sync --no-progress s3://bailey-k8s/rrna_yeast_data/NOP58_GLU/ NOP58_GLU
+  tar -xzf NOP58_GLU/Nop58_GLU_25S_full_length.tar.gz -C NOP58_GLU && rm NOP58_GLU/Nop58_GLU_25S_full_length.tar.gz
+  tar -xzf NOP58_GLU/Nop58_GLU_18S_full_length.tar.gz -C NOP58_GLU && rm NOP58_GLU/Nop58_GLU_18S_full_length.tar.gz
+  sed -i 's='/data/Nop58_GLU/'='"$cwd"/NOP58_GLU/'=g' "$cwd"/NOP58_GLU/kube_Nop58GLU_full_length.18S.readdb
+  sed -i 's='/data/Nop58_GLU/'='"$cwd"/NOP58_GLU/'=g' "$cwd"/NOP58_GLU/kube_Nop58GLU_full_length.25S.readdb
+  head -"$N_NOP58_GLU_READS"  "$cwd"/NOP58_GLU/kube_Nop58GLU_full_length.18S.readdb > "$cwd"/NOP58_GLU/run_nglu.readdb
+  head -"$N_NOP58_GLU_READS"  "$cwd"/NOP58_GLU/kube_Nop58GLU_full_length.25S.readdb >> "$cwd"/NOP58_GLU/run_nglu.readdb
+  echo "NOP58_GLU Done"
+
+  echo "Download CBF5_GLU"
+  aws s3 sync --no-progress s3://bailey-k8s/rrna_yeast_data/CBF5_GLU/ CBF5_GLU
+  tar -xzf CBF5_GLU/CBF5_GLU_25S_full_length.tar.gz -C CBF5_GLU && rm CBF5_GLU/CBF5_GLU_25S_full_length.tar.gz
+  tar -xzf CBF5_GLU/CBF5_GLU_18S_full_length.tar.gz -C CBF5_GLU && rm CBF5_GLU/CBF5_GLU_18S_full_length.tar.gz
+  sed -i 's='/data/'='$cwd/'=g' "$cwd"/CBF5_GLU/kube_CBF5GLU_full_length.18S.readdb
+  sed -i 's='/data/'='$cwd/'=g' "$cwd"/CBF5_GLU/kube_CBF5GLU_full_length.25S.readdb
+  head -"$N_CBF5_GLU_READS"  "$cwd"/CBF5_GLU/kube_CBF5GLU_full_length.18S.readdb  > "$cwd"/CBF5_GLU/run_cglu.readdb
+  head -"$N_CBF5_GLU_READS"  "$cwd"/CBF5_GLU/kube_CBF5GLU_full_length.25S.readdb  >> "$cwd"/CBF5_GLU/run_cglu.readdb
+  echo "CBF5_GLU Done"
 
 }
 
@@ -150,6 +151,23 @@ cat << EOF >> run_config.json
       "fast5_dirs": ["/data/"],
       "bwa_reference": "/data/reference/yeast_25S_18S.fa",
       "fofns": [],
+      "readdb": "/data/NOP58_GAL/run_ngal.readdb",
+      "fw_reference": null,
+      "bw_reference": null,
+      "kmers_from_reference": false,
+      "motifs": null,
+      "name": "native_nop58_gal",
+      "probability_threshold": $P_THRESHOLD,
+      "number_of_kmer_assignments": 10000,
+      "alignment_file": "/data/NOP58_GAL/06_17_19_R941_NOP58GAL_Manny_noU.2308.full_length.sorted.bam",
+      "recursive": false,
+      "assignments_dir": null
+    },
+    {
+      "positions_file": "/data/reference/alt_canonical_distribution/yeast_18S_25S_variants.positions",
+      "fast5_dirs": ["/data/"],
+      "bwa_reference": "/data/reference/yeast_25S_18S.fa",
+      "fofns": [],
       "readdb": "/data/CBF5_GAL/run_cgal.readdb",
       "fw_reference": null,
       "bw_reference": null,
@@ -159,6 +177,40 @@ cat << EOF >> run_config.json
       "probability_threshold": $P_THRESHOLD,
       "number_of_kmer_assignments": 10000,
       "alignment_file": "/data/CBF5_GAL/06102019_R941_CBF5GAL_noU.2308.full_length.sorted.bam",
+      "recursive": false,
+      "assignments_dir": null
+    },
+    {
+      "positions_file": "/data/reference/alt_canonical_distribution/yeast_18S_25S_variants.positions",
+      "fast5_dirs": ["/data/"],
+      "bwa_reference": "/data/reference/yeast_25S_18S.fa",
+      "fofns": [],
+      "readdb": "/data/NOP58_GLU/run_nglu.readdb",
+      "fw_reference": null,
+      "bw_reference": null,
+      "kmers_from_reference": false,
+      "motifs": null,
+      "name": "depletion_nop58_glu",
+      "probability_threshold": $P_THRESHOLD,
+      "number_of_kmer_assignments": 10000,
+      "alignment_file": "/data/NOP58_GLU/06_19_19_R941_NOP58GLU_Manny_noU.2308.full_length.sorted.bam",
+      "recursive": false,
+      "assignments_dir": null
+    },
+    {
+      "positions_file": "/data/reference/alt_canonical_distribution/yeast_18S_25S_variants.positions",
+      "fast5_dirs": ["/data/"],
+      "bwa_reference": "/data/reference/yeast_25S_18S.fa",
+      "fofns": [],
+      "readdb": "/data/CBF5_GLU/run_cglu.readdb",
+      "fw_reference": null,
+      "bw_reference": null,
+      "kmers_from_reference": false,
+      "motifs": null,
+      "name": "depletion_cbf5_glu",
+      "probability_threshold": $P_THRESHOLD,
+      "number_of_kmer_assignments": 10000,
+      "alignment_file": "/data/CBF5_GLU/06112019_R941_CBF5GLU_noU.2308.full_length.sorted.bam",
       "recursive": false,
       "assignments_dir": null
     }
@@ -223,10 +275,12 @@ echo "Running SignalAlign"
 runSignalAlign.py run --config run_config.json
 mkdir output/variant_calls
 echo "Running sa2bed"
+embed_main sa2bed -d output/tempFiles_alignment/native_nop58_gal/ -a "$AMBIG_MODEL2" -o output/variant_calls/native_nop58_gal_"$1".bed -t "$2" -c BDEFHIJKLMOPQR --overwrite --rna
 embed_main sa2bed -d output/tempFiles_alignment/native_cbf5_gal/ -a "$AMBIG_MODEL2" -o output/variant_calls/native_cbf5_gal_"$1".bed -t "$2" -c BDEFHIJKLMOPQR --overwrite --rna
 embed_main sa2bed -d output/tempFiles_alignment/canonical_ivt/ -a "$AMBIG_MODEL2" -o output/variant_calls/canonical_ivt_"$1".bed -t "$2" -c BDEFHIJKLMOPQR --overwrite --rna
+embed_main sa2bed -d output/tempFiles_alignment/depletion_nop58_glu/ -a "$AMBIG_MODEL2" -o output/variant_calls/depletion_nop58_glu_"$1".bed -t "$2" -c BDEFHIJKLMOPQR --overwrite --rna
+embed_main sa2bed -d output/tempFiles_alignment/depletion_cbf5_glu/ -a "$AMBIG_MODEL2" -o output/variant_calls/depletion_cbf5_glu_"$1".bed -t "$2" -c BDEFHIJKLMOPQR --overwrite --rna
 rm config.json
-
 }
 
 main "$1"

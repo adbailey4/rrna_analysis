@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: andrewbailey-unsupervised-90-ivt-$TS
+  name: andrewbailey-mrna-supervised-$TS
 spec:
   ttlSecondsAfterFinished: 6000
   template:
@@ -28,13 +28,13 @@ spec:
             - name: N_THREADS
               value: "30"
             - name: UNSUP_FREQ_THRESHOLD
-              value: "90"
+              value: "0"
             - name: ALL_KMERS
               value: "false"
             - name: UNSUP
-              value: "true"
+              value: "false"
             - name: USE_IVT_TRAINING
-              value: "true"
+              value: "false"
 
           command:
             - /bin/bash

@@ -52,3 +52,19 @@ control:
 	aws s3 cp k8_configs/control/control.sh s3://bailey-k8s/rrna_yeast_data/scripts/
 	# Run a kubernetes job with our image, prefix with USERNAME and timestamp
 	TS=`date +"%Y%m%d-%H%M%S"` envsubst < k8_configs/control/control.yml | kubectl create -f -
+
+hdp:
+	aws s3 cp k8_configs/train_hdp/train_hdp.sh s3://bailey-k8s/rrna_yeast_data/scripts/
+	# Run a kubernetes job with our image, prefix with USERNAME and timestamp
+	TS=`date +"%Y%m%d-%H%M%S"` envsubst < k8_configs/train_hdp/train_hdp.yml | kubectl create -f -
+
+small_model:
+	aws s3 cp k8_configs/small_model/small_model.sh s3://bailey-k8s/rrna_yeast_data/scripts/
+	# Run a kubernetes job with our image, prefix with USERNAME and timestamp
+	TS=`date +"%Y%m%d-%H%M%S"` envsubst < k8_configs/small_model/small_model.yml | kubectl create -f -
+
+small_6mer:
+	aws s3 cp k8_configs/small_model_6mer/small_model_6mer.sh s3://bailey-k8s/rrna_yeast_data/scripts/
+	# Run a kubernetes job with our image, prefix with USERNAME and timestamp
+	TS=`date +"%Y%m%d-%H%M%S"` envsubst < k8_configs/small_model_6mer/small_model_6mer.yml | kubectl create -f -
+

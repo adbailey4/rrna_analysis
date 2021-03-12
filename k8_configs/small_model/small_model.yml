@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: andrewbailey-ivt-and-native-all-kmers-$TS
+  name: andrewbailey-small-5mer-model-0.5-median-0-$TS
 spec:
   ttlSecondsAfterFinished: 6000
   template:
@@ -27,6 +27,15 @@ spec:
           env:
             - name: N_THREADS
               value: "30"
+            - name: P_THRESHOLD
+              value: "0.5"
+            - name: USE_MEDIAN
+              value: "true"
+            - name: UNSUP
+              value: "false"
+            - name: MIN_SD
+              value: "0"
+
           command:
             - /bin/bash
             - -c
@@ -35,8 +44,8 @@ spec:
               DEBIAN_FRONTEND=noninteractive apt-get -qq update
               DEBIAN_FRONTEND=noninteractive apt-get -qq install -y awscli git python3-distutils
               #             download data
-              aws s3 cp --no-progress s3://bailey-k8s/rrna_yeast_data/ivt_and_native_training.sh .
-              bash ivt_and_native_training.sh "$(N_THREADS)"
+              aws s3 cp --no-progress s3://bailey-k8s/rrna_yeast_data/scripts/small_model.sh .
+              bash small_model.sh "$(N_THREADS)" "$(P_THRESHOLD)" "$(USE_MEDIAN)" "$(UNSUP)" "$(MIN_SD)"
               echo DONE
           volumeMounts:
             - mountPath: /root/.aws
@@ -47,10 +56,10 @@ spec:
             limits:
 #              cpu: 2
 #              memory: "10Gi"
-#              ephemeral-storage: "100Gi"
+#              ephemeral-storage: "350Gi"
               cpu: 30
-              memory: "150Gi"
-              ephemeral-storage: "350Gi"
+              memory: "250Gi"
+              ephemeral-storage: "500Gi"
       restartPolicy: Never
       volumes:
         - name: scratch-volume

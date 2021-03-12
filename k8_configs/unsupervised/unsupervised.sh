@@ -1,7 +1,7 @@
 #!/bin/bash
 
-MODELS_BUCKET="bailey-k8s/rrna_experiments/models/null_model/"
-OUTPUT_BUCKET_TMP="bailey-k8s/rrna_experiments/unsupervised/fraction_sweep/"
+MODELS_BUCKET="bailey-k8s/rrna_experiments/models/inference_models/"
+OUTPUT_BUCKET_TMP="bailey-k8s/rrna_experiments/trained_mRNA_model/standard/"
 
 #all_kmers="true"
 #unsupervised="true"
@@ -12,9 +12,9 @@ USE_IVT_TRAINING="$5"
 
 FREQ_THRESHOLD="$2"
 
-N_TRAIN_READS=10
-N_TEST_READS=10
-EM_ITERATIONS=2
+N_TRAIN_READS=500
+N_TEST_READS=500
+EM_ITERATIONS=30
 
 THRESHOLD="0.01"
 P_THRESHOLD="0.5"
@@ -609,7 +609,7 @@ cat << EOF >> train_config.json
   "mod_only": false,
   "delete_alignments": false,
   "use_median": $USE_MEDIAN,
-  "min_sd": $MIN_SD
+  "min_sd": $MIN_SD,
   "training_kmers": $KMERS_LIST_FILE
 }
 EOF
@@ -731,7 +731,7 @@ cat << EOF >> run_config.json
   "ambig_model": $AMBIG_MODEL,
   "built_alignments": null,
   "mod_only": false,
-  "training_kmers": $KMERS_LIST_FILE
+  "training_kmers": $KMERS_LIST_FILE,
   "delete_alignments": false
 }
 EOF
