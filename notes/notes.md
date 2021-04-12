@@ -649,4 +649,22 @@ cp -r .aws ~/.aws
 aws s3 ls
 bash inference.sh 4
 
+### mRNA training
 aws s3 sync s3://nanopore-human-wgs/rna/UBC_Run5_20171031_DirectRNA .
+
+UBC_rel5/
+sed -i 's='/home/ubuntu'=''=g' UBC_Run5_20171031_DirectRNA.pass.dedup.fastq.index.readdb
+minimap2 --MD -t 8 -ax map-ont /home/ubuntu/data/consortium/gencode.v27.transcripts.fa /home/ubuntu/data/consortium/UBC/UBC_Run5_20171031_DirectRNA.pass.dedup.fastq | samtools view -@ 8 -bS - | samtools sort -@ 8 - > /home/ubuntu/data/consortium/UBC/UBC_Run5_20171031_DirectRNA.pass.dedup.sorted.bam && samtools view -@ 8 -bSF 2308 /home/ubuntu/data/consortium/UBC/UBC_Run5_20171031_DirectRNA.pass.dedup.sorted.bam > /home/ubuntu/data/consortium/UBC/UBC_Run5_20171031_DirectRNA.pass.dedup.2308.sorted.bam
+sudo docker run  --entrypoint /bin/bash  -v /home/ubuntu/data:/data   -it ucscbailey/signalalign@sha256:d868685fa01ef72b83c9b914c760cbfda309a8966569cffab503a5a34b28c82a
+trainModels.py run --config /data/consortium/sa_training/sa_mRNA_training.config.json
+
+SNO-RNAdb
+https://people.biochem.umass.edu/fournierlab/snornadb/mastertable.php
+
+contig", "reference_index", "strand", "variants", "accuracy", "precision", "negative_predictive_value", "recall", "specificity", "positive_likelihood_ratio", "negative_likelihood_ratio", "diagnostic_odds_ratio", "f1_score", "prevalence", "aucroc", "avg_precision", "brier_score
+
+
+### Basecalling
+
+readkit = sqk-rna002
+flowcell = FLO-MIN106

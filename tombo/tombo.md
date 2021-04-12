@@ -46,6 +46,8 @@
 
 * IVT vs Nop58_GAL (IVT vs Native)
   * `tombo detect_modifications level_sample_compare --fast5-basedirs /home/ubuntu/data/rrna_yeast_data/IVT/ivt_25S_full_length /home/ubuntu/data/rrna_yeast_data/IVT/ivt_18S_full_length --alternate-fast5-basedirs /home/ubuntu/data/rrna_yeast_data/NOP58_GAL/Nop58_GAL_25S_full_length /home/ubuntu/data/rrna_yeast_data/NOP58_GAL/Nop58_GAL_18S_full_length --statistics-file-basename IVT_vs_Nop58_GAL.level_compare_sample --processes 2`
+  * `tombo detect_modifications level_sample_compare --fast5-basedirs /home/ubuntu/rrna_yeast_data/IVT/ivt_25S_full_length /home/ubuntu/rrna_yeast_data/IVT/ivt_18S_full_length --alternate-fast5-basedirs /home/ubuntu/rrna_yeast_data/NOP58_GLU/Nop58_GLU_18S_full_length /home/ubuntu/rrna_yeast_data/NOP58_GLU/Nop58_GLU_25S_full_length --statistics-file-basename IVT_vs_Nop58_GLU_.level_compare_sample --processes 2`
+  * `tombo detect_modifications level_sample_compare --fast5-basedirs /home/ubuntu/rrna_yeast_data/IVT/ivt_25S_full_length /home/ubuntu/rrna_yeast_data/IVT/ivt_18S_full_length --alternate-fast5-basedirs /home/ubuntu/rrna_yeast_data/CBF5_GLU/CBF5_GLU_25S_full_length /home/ubuntu/rrna_yeast_data/CBF5_GLU/CBF5_GLU_18S_full_length --statistics-file-basename IVT_vs_CBF5_GLU.level_compare_sample --processes 2`
 
 
 ### De Novo IVT rRNA
@@ -67,6 +69,11 @@
 * De-novo
   * `tombo detect_modifications de_novo --fast5-basedirs /home/ubuntu/data/rrna_yeast_data/IVT/ivt_25S_full_length /home/ubuntu/data/rrna_yeast_data/IVT/ivt_18S_full_length --statistics-file-basename ivt.rna.de_novo_detect --processes 64 --rna`
 
+### Pileup
+Generate pileups for each genome and look at variants at different positions. Checking unannotated mod positions.
+* `samtools mpileup -f /home/ubuntu/rrna_yeast_data/reference/yeast_25S_18S.fa -s ivt_20191014_control.2308.full_length.18S.sorted.bam -o ivt_20191014_control.2308.full_length.18S.sorted.pileup`
+
+
 
 ### De Novo mRNA
 
@@ -86,4 +93,7 @@ https://github.com/nanopore-wgs-consortium/NA12878/blob/master/nanopore-human-tr
 * tombo resquiggle /home/ubuntu/data/consortium/UBC/UBC_rel5 /home/ubuntu/data/consortium/gencode.v27.transcripts.fa --processes 62 --num-most-common-errors 5 --rna --overwrite 
 * tombo detect_modifications level_sample_compare --fast5-basedirs /home/ubuntu/data/consortium/IVT2/UCSC_Run1_20180129_IVT_RNA --alternate-fast5-basedirs /home/ubuntu/data/consortium/UBC/UBC_rel5 --statistics-file-basename mrna.IVT_vs_UBC.level_compare_sample --processes 64
 * results are here s3://bailey-misc/mRNA_tombo_results/
+
 ### [HOME](../README.md)
+
+

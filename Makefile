@@ -68,3 +68,14 @@ small_6mer:
 	# Run a kubernetes job with our image, prefix with USERNAME and timestamp
 	TS=`date +"%Y%m%d-%H%M%S"` envsubst < k8_configs/small_model_6mer/small_model_6mer.yml | kubectl create -f -
 
+depletion:
+	aws s3 cp k8_configs/depletion/depletion.sh s3://bailey-k8s/rrna_yeast_data/scripts/
+	# Run a kubernetes job with our image, prefix with USERNAME and timestamp
+	TS=`date +"%Y%m%d-%H%M%S"` envsubst < k8_configs/depletion/depletion.yml | kubectl create -f -
+
+small_hdp:
+	aws s3 cp k8_configs/small_hdp/small_hdp.sh s3://bailey-k8s/rrna_yeast_data/scripts/
+	# Run a kubernetes job with our image, prefix with USERNAME and timestamp
+	TS=`date +"%Y%m%d-%H%M%S"` envsubst < k8_configs/small_hdp/small_hdp.yml | kubectl create -f -
+
+

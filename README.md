@@ -34,10 +34,6 @@ RNA was extracted from yeast cells either expressing (GAL) or depleted (GLU) of 
 ## Supervised Training
 * [Analysis Pipeline](k8_configs/k8s.md#Supervised)
 
-## Semi-supervised Training
-
-## Unsupervised Training
-
 ## Read Clustering
 
 

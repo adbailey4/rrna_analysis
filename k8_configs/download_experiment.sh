@@ -4,7 +4,7 @@ main() {
   start=$SECONDS
 #  download_experiment
 #  run="alt_canonical/gaussian/train_500_test_500_prob_0.5_em_iterations_30_gaussian_true_FREQ_THRESHOLD_0_USE_IVT_TRAINING_true_unsupervised_false_all_kmers_true_alt_c"
-  run="small_5mer/median/train_500_test_500_prob_0.8_em_iterations_30_gaussian_true_FREQ_THRESHOLD_0_USE_IVT_TRAINING_true_unsupervised_false_all_kmers_false_small_model_5mer_use_median_true_min_sd_2"
+  run="small_5mer/depletion/train_500_test_500_prob_0.7_em_iterations_30_gaussian_true_FREQ_THRESHOLD_0_USE_IVT_TRAINING_true_unsupervised_false_all_kmers_false_small_model_5mer_use_median_true_min_sd_0"
   run_bucket="bailey-k8s/rrna_experiments/"$run"/"
   output_run_dir="/Users/andrewbailey/CLionProjects/rrna_analysis/notebooks/rrna_data/rrna_kube_testing/"$run"/"
   download_bucket "$run_bucket" $output_run_dir
@@ -62,6 +62,7 @@ download_bucket() {
   aws s3 cp s3://"$run_bucket"rna_r94_5mer_ACGTabc.model.testing_accuracy_csvs.tar.gz "$output_run_dir" && tar -xzf "$output_run_dir"rna_r94_5mer_ACGTabc.model.testing_accuracy_csvs.tar.gz -C "$output_run_dir"
   aws s3 cp s3://"$run_bucket"rna_r94_5mer_ACGTabc.model.training_accuracy_csvs.tar.gz "$output_run_dir" && tar -xzf "$output_run_dir"rna_r94_5mer_ACGTabc.model.training_accuracy_csvs.tar.gz -C "$output_run_dir"
   aws s3 cp s3://"$run_bucket"rna_r94_5mer_ACGTabc.model.training_models.tar.gz "$output_run_dir" && tar -xzf "$output_run_dir"rna_r94_5mer_ACGTabc.model.training_models.tar.gz -C "$output_run_dir"
+  aws s3 cp s3://"$run_bucket"rna_r94_5mer_ACGTabc.model.all_variant_calls.tar.gz "$output_run_dir" && tar -xzf "$output_run_dir"rna_r94_5mer_ACGTabc.model.all_variant_calls.tar.gz -C "$output_run_dir"
 
 #  aws s3 cp s3://"$run_bucket"rna_r94_6mer_ACGTabc.model.testing_accuracy_csvs.tar.gz "$output_run_dir" && tar -xzf "$output_run_dir"rna_r94_6mer_ACGTabc.model.testing_accuracy_csvs.tar.gz -C "$output_run_dir"
 #  aws s3 cp s3://"$run_bucket"rna_r94_6mer_ACGTabc.model.training_accuracy_csvs.tar.gz "$output_run_dir" && tar -xzf "$output_run_dir"rna_r94_6mer_ACGTabc.model.training_accuracy_csvs.tar.gz -C "$output_run_dir"
